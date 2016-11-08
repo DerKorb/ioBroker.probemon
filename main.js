@@ -51,6 +51,9 @@ adapter.on('unload', function (callback) {
         callback();
     }
 });
+// sudo iw phy phy1 interface add mon0 type monitor
+// sudo ifconfig wlan1 up
+// sudo ifconfig mon0 up
 
 // is called if a subscribed object changes
 adapter.on('objectChange', function (id, obj) {
@@ -69,24 +72,13 @@ adapter.on('stateChange', function (id, state) {
     }
 });
 
-// Some message was sent to adapter instance over message box. Used by email, pushover, text2speech, ...
-adapter.on('message', function (obj) {
-    if (typeof obj == 'object' && obj.message) {
-        if (obj.command == 'send') {
-            // e.g. send email or pushover or whatever
-            console.log('send command');
-
-            // Send response in callback if required
-            if (obj.callback) adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-        }
-    }
-});
-
 // is called when databases are connected and adapter received configuration.
 // start here!
 adapter.on('ready', function () {
     main();
 });
+
+var requests = {};
 
 function main() {
 
@@ -98,7 +90,7 @@ function main() {
 //              console.log(pcap.decode.packet(raw_packet).payload);
             var frame = pcap.decode.packet(raw_packet).payload.ieee802_11Frame;
             if (frame.type == 0 && frame.subType == 4)
-                adapter.log.info("Probe request" + shost + "-> " +bssid);
+                adapter.log.info("Probe request" + frame.shost + "-> " +frame.bssid);
         }
     );
 
