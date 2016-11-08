@@ -31,6 +31,9 @@
 /*jslint node: true */
 "use strict";
 
+var pcap=require('pcap');
+
+
 // you have to require the utils module and call adapter function
 var utils =    require(__dirname + '/lib/utils'); // Get common adapter utils
 
@@ -89,9 +92,15 @@ function main() {
 
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
     // adapter.config:
-    adapter.log.info('config test1: ' + adapter.config.test1);
-    adapter.log.info('config test1: ' + adapter.config.test2);
-
+    adapter.log.info('creating pcap session');
+    pcap.createSession("mon0", '(type mgt) and (type mgt subtype probe-req )').
+    on('packet', function (raw_packet) {
+//              console.log(pcap.decode.packet(raw_packet).payload);
+            var frame = pcap.decode.packet(raw_packet).payload.ieee802_11Frame;
+            if (frame.type == 0 && frame.subType == 4)
+                adapter.log.info("Probe request" + shost + "-> " +bssid);
+        }
+    );
 
     /**
      *

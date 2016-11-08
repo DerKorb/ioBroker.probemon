@@ -30,6 +30,7 @@
       "grunt": "^0.4.5",
       "grunt-replace": "^0.9.3",
       "grunt-contrib-jshint": "^0.11.2",
+      "pcap": "https://github.com/mranney/node_pcap.git",
       "grunt-jscs": "^2.0.0",
       "grunt-http": "^1.6.0",
       "grunt-contrib-clean": "^0.6.0",

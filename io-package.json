@@ -14,9 +14,9 @@
 			  "ru": "Первоначальный адаптер"
 			}
 		},
-        "title":                    "Javascript/Node.js based template adapter",
+        "title":                    "device tracking via probe requests",
         "desc":                     {
-				 "en": "ioBroker template Adapter",
+				 "en": "Requires a wifi interface that supports monitor mode",
 				 "de": "ioBroker Template Adapter",
 				 "ru": "ioBroker Template драйвер как образец"
 		},
@@ -29,11 +29,9 @@
         "readme":                   "https://github.com/ioBroker/ioBroker.template/blob/master/README.md",
 		"loglevel":                 "info",
         "type":                     "common adapters",
-        "restartAdapters":          ["vis"]
+        "restartAdapters":          []
     },
     "native": {
-        "test1": true,
-        "test2": 42
     },
     "objects": [
 
