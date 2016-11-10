@@ -1,28 +1,28 @@
 {
-  "name": "iobroker.template",
+  "name": "iobroker.probemon",
   "version": "0.5.0",
-  "description": "ioBroker template Adapter",
+  "description": "ioBroker probemon Adapter",
   "author": {
-    "name": "@@Author@@",
-    "email": "@@email@@"
+    "name": "Korbinian Sollner",
+    "email": "ksollner@feinarbyte.de"
   },
   "contributors": [
     {
-      "name": "@@Author@@",
-      "email": "@@email@@"
+      "name": "Korbinian Sollner",
+      "email": "ksollner@feinarbyte.de"
     }
   ],
-  "homepage": "https://github.com/ioBroker/ioBroker.template",
+  "homepage": "https://github.com/ioBroker/ioBroker.probemon",
   "license": "MIT",
   "keywords": [
     "ioBroker",
-    "template",
+    "probemon",
     "Smart Home",
     "home automation"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.template"
+    "url": "https://github.com/ioBroker/ioBroker.probemon"
   },
   "dependencies": {
   },
@@ -39,7 +39,7 @@
       "grunt-exec": "^0.4.6"
   },
   "bugs": {
-    "url": "https://github.com/ioBroker/ioBroker.template/issues"
+    "url": "https://github.com/ioBroker/ioBroker.probemon/issues"
   },
   "readmeFilename": "README.md"
 }

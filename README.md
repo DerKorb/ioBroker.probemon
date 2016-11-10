@@ -1,20 +1,20 @@
-![Logo](admin/template.png)
-# ioBroker.template
+![Logo](admin/probemon.png)
+# ioBroker.probemon
 =================
 
-This adapter is a template for the creation of an ioBroker adapter. You do not need it at least that you plan developing your own adapter.
+This adapter is a probemon for the creation of an ioBroker adapter. You do not need it at least that you plan developing your own adapter.
 
-It includes both code running within iobroker and as vis widget. If you only plan to create a vis widget then you should use the [iobroker.vis-template](https://github.com/ioBroker/ioBroker.vis-template) instead.
+It includes both code running within iobroker and as vis widget. If you only plan to create a vis widget then you should use the [iobroker.vis-probemon](https://github.com/ioBroker/ioBroker.vis-probemon) instead.
 
 ##Steps 
-1. download and unpack this packet from github ```https://github.com/ioBroker/ioBroker.template/archive/master.zip```
-  or clone git repository ```git clone https://github.com/ioBroker/ioBroker.template.git```
+1. download and unpack this packet from github ```https://github.com/ioBroker/ioBroker.probemon/archive/master.zip```
+  or clone git repository ```git clone https://github.com/ioBroker/ioBroker.probemon.git```
 
-2. download required npm packets. Write in ioBroker.template directory:
+2. download required npm packets. Write in ioBroker.probemon directory:
 
   ```npm install```
   
-3. set name of this template. Call
+3. set name of this probemon. Call
   
   ```grunt rename --name=mynewname --email=email@mail.com --author="Author Name"```
   
@@ -24,9 +24,9 @@ It includes both code running within iobroker and as vis widget. If you only pla
   
   ```npm install -g grunt-cli```
  
-4. rename directory from *ioBroker.template* (can be *ioBroker.template-master*) to *iobroker.mynewname*
+4. rename directory from *ioBroker.probemon* (can be *ioBroker.probemon-master*) to *iobroker.mynewname*
 
-5. to use this template you should copy it into *.../iobroker/node_modules* directory and then create an instance for it with iobroker.admin
+5. to use this probemon you should copy it into *.../iobroker/node_modules* directory and then create an instance for it with iobroker.admin
 
 6. create your adapter:
 
@@ -66,7 +66,7 @@ It includes both code running within iobroker and as vis widget. If you only pla
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016 @@Author@@<@@email@@>
+Copyright (c) 2016 Korbinian Sollner<ksollner@feinarbyte.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
