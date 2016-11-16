@@ -25,7 +25,7 @@
     ],
     "readme": "https://github.com/ioBroker/ioBroker.probemon/blob/master/README.md",
     "loglevel": "info",
-    "type": "common adapters",
+    "type": "communication",
     "restartAdapters": []
   },
   "native": {
