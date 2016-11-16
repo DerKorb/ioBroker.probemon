@@ -6,6 +6,10 @@
     "name": "Korbinian Sollner",
     "email": "ksollner@feinarbyte.de"
   },
+  "os": [
+    "linux",
+    "darwin"
+ ],
   "contributors": [
     {
       "name": "Korbinian Sollner",
