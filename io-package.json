@@ -10,7 +10,7 @@
         "ru": "Первоначальный адаптер"
       }
     },
-    "title": "device tracking via probe requests",
+    "title": "Proberequest Monitoring Adapter",
     "desc": {
       "en": "Monitors probe requests from wifi devices",
       "de": "Verfolgt probe-requests von wifi Geräten"
