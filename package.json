@@ -29,7 +29,7 @@
     "url": "https://github.com/ioBroker/ioBroker.probemon"
   },
   "dependencies": {
-      "pcap": "https://github.com/mranney/node_pcap.git",
+      "pcap": "https://github.com/mranney/node_pcap.git"
   },
   "devDependencies": {
       "grunt": "^0.4.5",
