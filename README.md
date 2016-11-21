@@ -1,16 +1,26 @@
 ![Logo](admin/probemon.png)
 # ioBroker.probemon
 =================
-Tracks devices via probe request monitoring. Requires a wifi adapter that allows promiscous mode.
+This adapter allow to track the presence of wifi devices (your's and anyone else's within the range of your wifi).
 
-Specify the monitor interface (eg "mon0") and a list of mac addresses in the config.
+It is using pcap to listen for so called probe requests, sent by wifi devices to scan for available wlans.
 
-Unix only
+If a probe request is detected, availibility for the corresponding MAC adress is set true. If no request is detected for ten seconds availibilty is set back to false.
 
-# setup your wifiadapter for monitor mode (numbers need to be adapted to your hardware):
+Tested on Rpi 3 with Wifi Dongle (original pi wifi does not support monitor mode).
+
+To change your wifi adapter to monitor mode follow the follwing steps:
 ~~~~
+# shut down the corresponding wlan interface
 sudo ifconfig wlan1 down
+
+# enable monitor mode for the corresponding physical interface
 sudo iw phy phy1 interface add mon0 type monitor
+
+# bring the wlan interface back up
 sudo ifconfig wlan1 up
+
+# activate the monitor interface
 sudo ifconfig mon0 up
 ~~~~
+For the adapter to work you need to configurate it. Specify the monitor interface from before (mon0 in my case) and which MAC adresses you want to track.
