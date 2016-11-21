@@ -9,7 +9,7 @@ If a probe request is detected, availibility for the corresponding MAC adress is
 
 Tested on Rpi 3 with Wifi Dongle (original pi wifi does not support monitor mode).
 
-To change your wifi adapter to monitor mode follow the follwing steps:
+To change your wifi adapter to monitor mode follow these steps:
 ~~~~
 # shut down the corresponding wlan interface
 sudo ifconfig wlan1 down
