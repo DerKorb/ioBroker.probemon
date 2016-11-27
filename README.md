@@ -24,3 +24,5 @@ sudo ifconfig wlan1 up
 sudo ifconfig mon0 up
 ~~~~
 For the adapter to work you need to configurate it. Specify the monitor interface from before (mon0 in my case) and which MAC adresses you want to track.
+
+You will need libpcap installed. Most OSX machines seem to have it. All major Linux distributions have it available either by default or with a package like libpcap-dev.
