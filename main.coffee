@@ -7,7 +7,7 @@
 requests = {}
 _ = require "lodash"
 
-OFFLINE_TIMEOUT = 1000*60*10
+OFFLINE_TIMEOUT = 1000*60*20
 
 setOffline = (mac) ->
   requests[mac].online = false
@@ -75,7 +75,8 @@ main = ->
   pcap.createSession(adapter.config.interface, '(type mgt) and (type mgt subtype probe-req )').on 'packet', (raw_packet) ->
     #              console.log(pcap.decode.packet(raw_packet).payload);
     frame = pcap.decode.packet(raw_packet).payload.ieee802_11Frame
-    if frame.type == 0 and frame.subType == 4
+    #if frame.type == 0 and frame.subType == 4
+    if frame.shost?
       handleProbeRequest frame.shost.toString()
     return
 
