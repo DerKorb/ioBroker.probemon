@@ -4,12 +4,8 @@
 
 ###
 
-### jshint -W097 ###
-
-# jshint strict:false
-
-###jslint node: true ###
 requests = {}
+_ = require "lodash"
 # probemon.0.88:79:7e:52:c1:c3
 OFFLINE_TIMEOUT = 1000*60*10
 
@@ -17,20 +13,13 @@ setOffline = (mac) ->
   requests[mac].online = false
   adapter.setState mac + '.online', val: false, ack: true
 
-handleProbeRequest = (mac) ->
-  found = false
-  for device in adapter.config.devices
-    found = true if device.mac is mac.toString()
-
-  return unless found
-  adapter.log.info "mac address found"
-
-  unless requests[mac]
-    requests[mac] =
+trackDevice = (deviceConfig) ->
+  unless requests[deviceConfig.mac]
+    requests[deviceConfig.mac] =
       lastSeen: +new Date
       online: true
       timeout: setTimeout (-> setOffline mac), OFFLINE_TIMEOUT
-    adapter.setObject mac + '.online',
+    adapter.setObject deviceConfig.name + '.online',
       type: 'state'
       common:
         name: 'online'
@@ -38,27 +27,34 @@ handleProbeRequest = (mac) ->
         role: 'indicator.reachable'
       native: {}
 
-    adapter.setObject mac + '.name',
-      type: 'state'
-      common:
-        name: 'name'
-        type: 'string'
-      native: {}
-    adapter.setState mac + '.name', val: "person#{Object.keys(requests).length}", ack: true
-
-    adapter.setObject mac + '.lastSeen',
+    adapter.setObject deviceConfig.name + '.lastSeen',
       type: 'state'
       common:
         name: 'lastSeen'
         type: 'date'
       native: {}
   else
-    clearTimeout requests[mac].timeout
-    requests[mac].timeout = setTimeout (-> setOffline mac), OFFLINE_TIMEOUT
-    requests[mac].lastSeen = +new Date
-    requests[mac].online = true
-  adapter.setState mac + '.online', val: true, ack: true
-  adapter.setState mac + '.lastSeen', val: +new Date, ack: true
+    clearTimeout requests[deviceConfig.mac].timeout
+    requests[deviceConfig.mac].timeout = setTimeout (-> setOffline mac), OFFLINE_TIMEOUT
+    requests[deviceConfig.mac].lastSeen = +new Date
+    requests[deviceConfig.mac].online = true
+
+  adapter.setState deviceConfig.name + '.online', val: true, ack: true
+  adapter.setState deviceConfig.name + '.lastSeen', val: +new Date, ack: true
+
+
+handleProbeRequest = (mac) ->
+  # check if device is set to track
+  adapter.log.info "handle #{mac}"
+  deviceConfig = _.find adapter.config.devices, (dev) -> dev.mac is mac
+  if deviceConfig?
+    trackDevice deviceConfig
+  #else
+    #if adapter.config.nsa_mode
+  adapter.setState "nsamode.raw_proberequest", val: mac, ack: true
+
+
+
 
 
 
@@ -66,11 +62,21 @@ main = ->
   # The adapters config (in the instance object everything under the attribute "native") is accessible via
   # adapter.config:
   adapter.log.info 'creating pcap session'
+
+  adapter.setObject "nsamode.raw_proberequest",
+    type: 'state'
+    common:
+      name: 'raw_proberequest'
+      type: 'string'
+      role: 'info'
+    native: {}
+
+
   pcap.createSession(adapter.config.interface, '(type mgt) and (type mgt subtype probe-req )').on 'packet', (raw_packet) ->
     #              console.log(pcap.decode.packet(raw_packet).payload);
     frame = pcap.decode.packet(raw_packet).payload.ieee802_11Frame
     if frame.type == 0 and frame.subType == 4
-      handleProbeRequest frame.shost
+      handleProbeRequest frame.shost.toString()
     return
 
   # in this probemon all states changes inside the adapters namespace are subscribed

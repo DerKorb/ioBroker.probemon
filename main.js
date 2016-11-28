@@ -5,16 +5,12 @@
  * probemon adapter
  */
 
-
-/* jshint -W097 */
-
-
-/*jslint node: true */
-
 (function() {
-  var OFFLINE_TIMEOUT, adapter, handleProbeRequest, main, pcap, requests, setOffline, utils;
+  var OFFLINE_TIMEOUT, _, adapter, handleProbeRequest, main, pcap, requests, setOffline, trackDevice, utils;
 
   requests = {};
+
+  _ = require("lodash");
 
   OFFLINE_TIMEOUT = 1000 * 60 * 10;
 
@@ -26,29 +22,16 @@
     });
   };
 
-  handleProbeRequest = function(mac) {
-    var device, found, i, len, ref;
-    found = false;
-    ref = adapter.config.devices;
-    for (i = 0, len = ref.length; i < len; i++) {
-      device = ref[i];
-      if (device.mac === mac.toString()) {
-        found = true;
-      }
-    }
-    if (!found) {
-      return;
-    }
-    adapter.log.info("mac address found");
-    if (!requests[mac]) {
-      requests[mac] = {
+  trackDevice = function(deviceConfig) {
+    if (!requests[deviceConfig.mac]) {
+      requests[deviceConfig.mac] = {
         lastSeen: +(new Date),
         online: true,
         timeout: setTimeout((function() {
           return setOffline(mac);
         }), OFFLINE_TIMEOUT)
       };
-      adapter.setObject(mac + '.online', {
+      adapter.setObject(deviceConfig.name + '.online', {
         type: 'state',
         common: {
           name: 'online',
@@ -57,19 +40,7 @@
         },
         "native": {}
       });
-      adapter.setObject(mac + '.name', {
-        type: 'state',
-        common: {
-          name: 'name',
-          type: 'string'
-        },
-        "native": {}
-      });
-      adapter.setState(mac + '.name', {
-        val: "person" + (Object.keys(requests).length),
-        ack: true
-      });
-      adapter.setObject(mac + '.lastSeen', {
+      adapter.setObject(deviceConfig.name + '.lastSeen', {
         type: 'state',
         common: {
           name: 'lastSeen',
@@ -78,30 +49,54 @@
         "native": {}
       });
     } else {
-      clearTimeout(requests[mac].timeout);
-      requests[mac].timeout = setTimeout((function() {
+      clearTimeout(requests[deviceConfig.mac].timeout);
+      requests[deviceConfig.mac].timeout = setTimeout((function() {
         return setOffline(mac);
       }), OFFLINE_TIMEOUT);
-      requests[mac].lastSeen = +(new Date);
-      requests[mac].online = true;
+      requests[deviceConfig.mac].lastSeen = +(new Date);
+      requests[deviceConfig.mac].online = true;
     }
-    adapter.setState(mac + '.online', {
+    adapter.setState(deviceConfig.name + '.online', {
       val: true,
       ack: true
     });
-    return adapter.setState(mac + '.lastSeen', {
+    return adapter.setState(deviceConfig.name + '.lastSeen', {
       val: +(new Date),
+      ack: true
+    });
+  };
+
+  handleProbeRequest = function(mac) {
+    var deviceConfig;
+    adapter.log.info("handle " + mac);
+    deviceConfig = _.find(adapter.config.devices, function(dev) {
+      return dev.mac === mac;
+    });
+    if (deviceConfig != null) {
+      trackDevice(deviceConfig);
+    }
+    return adapter.setState("nsamode.raw_proberequest", {
+      val: mac,
       ack: true
     });
   };
 
   main = function() {
     adapter.log.info('creating pcap session');
+    adapter.setObject("nsamode.raw_proberequest", {
+      type: 'state',
+      common: {
+        name: 'raw_proberequest',
+        type: 'string',
+        role: 'info'
+      },
+      "native": {}
+    });
     pcap.createSession(adapter.config["interface"], '(type mgt) and (type mgt subtype probe-req )').on('packet', function(raw_packet) {
       var frame;
       frame = pcap.decode.packet(raw_packet).payload.ieee802_11Frame;
       if (frame.type === 0 && frame.subType === 4) {
-        handleProbeRequest(frame.shost);
+        handleProbeRequest(frame.shost.toString());
       }
     });
     return adapter.subscribeStates('*');

@@ -30,7 +30,8 @@
   },
   "native": {
     "interface": "mon0",
-    "devices": []
+    "devices": [],
+    "nsa_mode": true
   },
   "objects": [
   ]
