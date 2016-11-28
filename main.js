@@ -6,6 +6,7 @@
  */
 
 (function() {
+  'use strict';
   var OFFLINE_TIMEOUT, _, adapter, handleProbeRequest, main, pcap, requests, setOffline, trackDevice, utils;
 
   requests = {};
@@ -101,8 +102,6 @@
     });
     return adapter.subscribeStates('*');
   };
-
-  'use strict';
 
   pcap = require('pcap');
 

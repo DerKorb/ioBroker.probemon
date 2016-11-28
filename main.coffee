@@ -1,12 +1,12 @@
 ###*
 #
 # probemon adapter
-
 ###
+'use strict'
 
 requests = {}
 _ = require "lodash"
-# probemon.0.88:79:7e:52:c1:c3
+
 OFFLINE_TIMEOUT = 1000*60*10
 
 setOffline = (mac) ->
@@ -84,7 +84,6 @@ main = ->
 
 
 
-'use strict'
 pcap = require('pcap')
 # you have to require the utils module and call adapter function
 utils = require(__dirname + '/lib/utils')
